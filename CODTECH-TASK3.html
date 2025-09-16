@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio</title>
+    <style>
+        /* 
+        * Global Styles and Variables
+        * --------------------------
+        * Defines reusable color variables and base sizing for consistent styling
+        * Colors use HSL format for easy adjustments:
+        * --primary-color: Light purple accent color for main interactive elements
+        * --dark-color: Dark blue-gray for text and backgrounds  
+        * --light-color: Off-white background color 
+        * --accent-color: Orange accent color for highlights
+        * --text-color: Default text color (slate gray)
+        * --max-width: Maximum content width for large screens
+        */
+        :root {
+            --primary-color: #9c7bee;
+            --dark-color: #1e293b;
+            --light-color: #f8fafc;
+            --accent-color: #f59e0b;
+            --text-color: #334155;
+            --max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        =======
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #7e5fd9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            margin-left: 1rem;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .expanded-content {
+            display: none;
+        }
+        
+        .read-more-btn {
+            background: transparent;
+            color: var(--primary-color);
+            border: none;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+            margin: 1rem 0;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background-color: rgba(248, 250, 252, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        /* 
+        * Hero Section - Main Introduction Area
+        * ------------------------------------
+        * Covers full viewport height with centered content
+        * Flex layout ensures responsive stacking on mobile
+        * padding-top accounts for fixed header height
+        */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 6rem;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text span {
+            color: var(--primary-color);
+        }
+=======
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 80%;
+            max-height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
+        }
+
+        /* Skills Section */
+        #skills {
+            background-color: white;
+        }
+
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .skill {
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .skill:hover {
+            transform: translateY(-10px);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .skill h3 {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        /* Projects Section */
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .project-info p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            border: 1px solid var(--primary-color);
+        }
+
+        .project-links .btn-demo {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Contact Section */
+        #contact {
+            background-color: white;
+            text-align: center;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--light-color);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transition: left 0.3s ease;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">DevPortfolio</a>
+                <div class="hamburger">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Hi, I'm <span>Aryan Singh</span></h1>
+                    <h2>Full Stack Developer & Digital Experience Architect</h2>
+                    <p>With 5+ years transforming complex problems into elegant solutions, I specialize in building responsive web applications that engage users and drive business results. My approach combines technical excellence with thoughtful UI/UX design principles.</p>
+                    <p class="expanded-content">Currently focused on creating scalable JavaScript applications using React and Node.js, while continuously expanding my expertise in cloud technologies and performance optimization.</p>
+                    <button id="read-more-btn" class="read-more-btn">Read More</button>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn">View My Work</a>
+                        <a href="#contact" class="btn btn-secondary">Let's Connect</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/3a676176-6cbd-44b1-aa3b-e2cd129ed7b3.png" alt="Professional developer working at desk with multiple monitors displaying code" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2>My Skills</h2>
+            <div class="skills-container">
+                <div class="skill">
+                    <div class="skill-icon">💻</div>
+                    <h3>Frontend</h3>
+                    <p>React, Vue, JavaScript, HTML5, CSS3, Tailwind</p>
+                </div>
+                <div class="skill">
+                    <div class="skill-icon">⚙️</div>
+                    <h3>Backend</h3>
+                    <p>Node.js, Express, Django, Python, REST APIs</p>
+                </div>
+                <div class="skill">
+                    <div class="skill-icon">🗃️</div>
+                    <h3>Databases</h3>
+                    <p>MongoDB, PostgreSQL, Firebase, MySQL</p>
+                </div>
+                <div class="skill">
+                    <div class="skill-icon">📱</div>
+                    <h3>Mobile</h3>
+                    <p>React Native, Flutter, iOS & Android Development</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2>Recent Projects</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/865d934e-0fd6-4dab-a89b-66a7977ddfce.png" alt="E-commerce dashboard showing sales analytics and product management interface" />
+                    </div>
+                    <div class="project-info">
+                        <h3>E-commerce Dashboard</h3>
+                        <p>A comprehensive admin dashboard for e-commerce businesses with analytics, product management, and order tracking.</p>
+                        <div class="project-links">
+                            <a href="#" class="btn-demo">Live Demo</a>
+                            <a href="#">Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/893cf11b-7753-4620-8494-667850efef02.png" alt="Fitness tracking mobile app interface with workout stats and nutrition tracking" />
+                    </div>
+                    <div class="project-info">
+                        <h3>Fitness Tracker</h3>
+                        <p>Mobile app for tracking workouts, nutrition, and progress with personalized recommendations.</p>
+                        <div class="project-links">
+                            <a href="#" class="btn-demo">Live Demo</a>
+                            <a href="#">Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4c9e6df6-0f6e-406c-86af-1f320b8c94db.png" alt="Collaborative whiteboard application with multiple users editing simultaneously" />
+                    </div>
+                    <div class="project-info">
+                        <h3>Collaborative Whiteboard</h3>
+                        <p>Real-time collaborative drawing tool built with WebSockets and Canvas API.</p>
+                        <div class="project-links">
+                            <a href="#" class="btn-demo">Live Demo</a>
+                            <a href="#">Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <p>Have a project in mind or want to collaborate? I'd love to hear from you.</p>
+            <form class="contact-form">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Your Message" required></textarea>
+                </div>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#" aria-label="GitHub profile">GitHub</a>
+                <a href="#" aria-label="LinkedIn profile">LinkedIn</a>
+                <a href="#" aria-label="Twitter profile">Twitter</a>
+                <a href="#" aria-label="Email contact">Email</a>
+            </div>
+            <p>© 2023 Aryan Singh. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        /*
+        * Mobile Navigation Toggle
+        * -----------------------
+        * Toggles the mobile menu visibility when hamburger icon is clicked
+        * Adds/removes 'active' class which controls the menu's position
+        */
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        /*
+        * Smooth Scrolling for Navigation Links
+        * -------------------------------------
+        * Prevents default jump-to behavior on same-page links
+        * Smoothly animates scroll to section while:
+        * 1. Closing mobile menu if open
+        * 2. Maintaining proper spacing for fixed header
+        */
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                navLinks.classList.remove('active');
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        /*
+        * Contact Form Submission Handler
+        * -------------------------------
+        * Prevents default form submission to server
+        * Shows success feedback to user 
+        * Resets form fields for new submissions
+        */
+        const contactForm = document.querySelector('.contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! I will get back to you soon.');
+            this.reset();
+        });
+
+        /*
+        * Expand/Collapse Content Toggle
+        * ------------------------------
+        * Controls visibility of additional intro content
+        * Swaps button text between "Read More"/"Read Less"
+        * Uses direct style manipulation (could use class toggle alternatively)
+        */
+        const readMoreBtn = document.getElementById('read-more-btn');
+        const expandedContent = document.querySelector('.expanded-content');
+        readMoreBtn.addEventListener('click', () => {
+            if (expandedContent.style.display === 'block') {
+                expandedContent.style.display = 'none';
+                readMoreBtn.textContent = 'Read More';
+            } else {
+                expandedContent.style.display = 'block';
+                readMoreBtn.textContent = 'Read Less';
+            }
+        });
+    </script>
+</body>
+</html>
+

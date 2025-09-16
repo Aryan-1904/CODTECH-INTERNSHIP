@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Quiz App</title>
+    <style>
+        /* CSS Architecture:
+         * 1. Variables - Centralized theming with CSS custom properties
+         * 2. Reset - Basic reset for consistent baseline
+         * 3. Layout - Core page structure
+         * 4. Components - Styled UI elements (buttons, cards etc)
+         * 5. States - Visual feedback states (hover, active etc)
+         * 6. Responsive - Media queries for different screens
+         */
+        :root {
+            --primary: #4a6bff;
+            --secondary: #f8f9fa;
+            --accent: #ff6b6b;
+            --dark: #343a40;
+            --light: #ffffff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--secondary);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--light);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--accent);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .quiz-container {
+            margin: 30px 0;
+        }
+        
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .option {
+            background-color: var(--secondary);
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+        
+        .option:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(74, 107, 255, 0.1);
+        }
+        
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+        
+        .option.incorrect {
+            border-color: var(--accent);
+            background-color: rgba(255, 107, 107, 0.1);
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+            border-left: 5px solid var(--success);
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: var(--accent);
+            border-left: 5px solid var(--accent);
+        }
+        
+        .next-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: none;
+            transition: all 0.2s ease;
+        }
+        
+        .next-btn:hover {
+            background-color: #3a5bd9;
+            transform: translateY(-2px);
+        }
+        
+        .quiz-complete {
+            text-align: center;
+            display: none;
+        }
+        
+        .quiz-complete h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .result-details {
+            margin: 20px 0;
+        }
+        
+        .restart-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s ease;
+        }
+        
+        .restart-btn:hover {
+            background-color: #3a5bd9;
+            transform: translateY(-2px);
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(74, 107, 255, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Responsive Design:
+         * Adjusts layout and typography for mobile devices
+         * - Container padding reduced
+         * - Font sizes slightly smaller
+         * - Option padding adjusted
+         */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .question {
+                font-size: 1.1rem;
+            }
+            
+            .option {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main container div that holds all quiz content -->
+    <div class="container">
+        <!-- Header section with quiz title and description -->
+        <header>
+            <h1>Tech Knowledge Quiz</h1>
+            <p>Test your IT and programming knowledge</p>
+        </header>
+        
+        <!-- Progress bar container to show quiz completion status -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="score-display" id="score-display">Score: 0</div>
+        
+        <!-- Main quiz container where questions will be dynamically loaded -->
+        <div class="quiz-container" id="quiz-container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+            </div>
+        </div>
+        
+        <button class="next-btn" id="next-btn">Next Question</button>
+        
+        <div class="quiz-complete" id="quiz-complete">
+            <h2>Congratulations! Quiz Completed!</h2>
+            <div class="result-details">
+                <p>Your final score: <span id="final-score">0</span> out of <span id="total-questions">0</span></p>
+                <p id="performance-message"></p>
+            </div>
+            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fc3a0863-1cce-4e2a-8551-3eeea974d214.png" alt="Quiz completion celebration image with stars and confetti" />
+            <button class="restart-btn" id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM content to load before executing JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM elements
+            const quizContainer = document.getElementById('quiz-container');
+            const nextBtn = document.getElementById('next-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const scoreDisplay = document.getElementById('score-display');
+            const progressBar = document.getElementById('progress-bar');
+            const quizComplete = document.getElementById('quiz-complete');
+            const loading = document.getElementById('loading');
+            const finalScore = document.getElementById('final-score');
+            const totalQuestions = document.getElementById('total-questions');
+            const performanceMessage = document.getElementById('performance-message');
+            
+            // Quiz state management:
+            // - currentQuestionIndex: Tracks which question is currently showing
+            // - score: Accumulates correct answers
+            // - selectedOption: Stores the user's selected answer index
+            // - questions: Array that holds the current set of questions
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let selectedOption = null;
+            let questions = [];
+            
+            // Quiz questions
+            const sampleQuestions = [
+                {
+                    question: "What does \"HTTP\" stand for?",
+                    options: ["Hyper Text Transfer Protocol", "High Transmission Text Protocol", "Hyper Transfer Text Package", "Host Text Transfer Path"],
+                    correctAnswer: 0,
+                    explanation: "✅ Correct Answer: Hyper Text Transfer Protocol"
+                },
+                {
+                    question: "Which of the following is an example of open-source software?",
+                    options: ["Microsoft Word", "Adobe Photoshop", "Linux", "CorelDRAW"],
+                    correctAnswer: 2,
+                    explanation: "Linux is an example of open-source software."
+                },
+                {
+                    question: "Which programming language is primarily used for web development on the client side?",
+                    options: ["Python", "Java", "JavaScript", "C++"],
+                    correctAnswer: 2,
+                    explanation: "JavaScript is primarily used for web development on the client side."
+                },
+                {
+                    question: "What is the main function of a firewall in a computer network?",
+                    options: ["Increase internet speed", "Manage printer settings", "Protect against unauthorized access", "Store data securely"],
+                    correctAnswer: 2,
+                    explanation: "The main function of a firewall is to protect against unauthorized access."
+                },
+                {
+                    question: "Which of the following best defines 'cloud computing'?",
+                    options: ["Storing data on a physical drive", "Using computer services over the internet", "Connecting multiple computers in a network", "Surfing the web anonymously"],
+                    correctAnswer: 1,
+                    explanation: "Cloud computing is using computer services over the internet."
+                },
+                {
+                    question: "What does 'AI' stand for in the IT sector?",
+                    options: ["Automated Integration", "Artificial Intelligence", "Applied Information", "Analytical Interface"],
+                    correctAnswer: 1,
+                    explanation: "AI stands for Artificial Intelligence."
+                },
+                {
+                    question: "Which company developed the Windows operating system?",
+                    options: ["Google", "Apple", "IBM", "Microsoft"],
+                    correctAnswer: 3,
+                    explanation: "Microsoft developed the Windows operating system."
+                },
+                {
+                    question: "What is the purpose of an IP address?",
+                    options: ["Identify websites", "Store user passwords", "Assign a unique address to each device on a network", "Run background processes"],
+                    correctAnswer: 2,
+                    explanation: "An IP address assigns a unique address to each device on a network."
+                },
+                {
+                    question: "Which of the following is not a type of malware?",
+                    options: ["Virus", "Trojan", "Firewall", "Worm"],
+                    correctAnswer: 2,
+                    explanation: "A firewall is not a type of malware; it is a security system."
+                },
+                {
+                    question: "In the context of databases, what does 'SQL' stand for?",
+                    options: ["Structured Query Language", "Secure Query Logic", "Standard Quality Logic", "System Query Layer"],
+                    correctAnswer: 0,
+                    explanation: "SQL stands for Structured Query Language."
+                }
+            ];
+            
+            /**
+             * Initialize the quiz:
+             * - Reset current question index and score
+             * - Shuffle questions
+             * - Display first question
+             */
+            function initQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                questions = [...sampleQuestions];
+                shuffleArray(questions);
+                updateScore();
+                loadQuestion();
+            }
+            
+            /**
+             * Shuffle questions using Fisher-Yates algorithm
+             * This ensures questions appear in random order
+             * Steps through array backwards and swaps each element
+             * with a random one before it
+             */
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+            
+            /**
+             * Load current question:
+             * - Show loading spinner
+             * - Create question HTML elements
+             * - Update progress bar
+             * - Add event listeners to options
+             */
+            function loadQuestion() {
+                loading.style.display = 'flex';
+                quizContainer.innerHTML = '';
+                
+                // Simulate loading effect
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    
+                    if (currentQuestionIndex < questions.length) {
+                        const question = questions[currentQuestionIndex];
+                        const questionElement = document.createElement('div');
+                        
+                        questionElement.innerHTML = `
+                            <div class="question">${currentQuestionIndex + 1}. ${question.question}</div>
+                            <div class="options">
+                                ${question.options.map((option, index) => `
+                                    <div class="option" data-index="${index}">${option}</div>
+                                `).join('')}
+                            </div>
+                            <div class="feedback" id="feedback"></div>
+                        `;
+                        
+                        quizContainer.appendChild(questionElement);
+                        
+                        // Update progress
+                        progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+                        
+                        // Add event listeners to options
+                        const options = document.querySelectorAll('.option');
+                        options.forEach(option => {
+                            option.addEventListener('click', selectOption);
+                        });
+                    } else {
+                        // Quiz completed
+                        showResults();
+                    }
+                }, 800);
+            }
+            
+            /**
+             * Handle option selection:
+             * - Highlight selected option
+             * - Check if answer is correct
+             * - Update score
+             * - Show feedback
+             * - Enable next button
+             */
+            function selectOption(e) {
+                const selectedElement = e.target;
+                const selectedIndex = parseInt(selectedElement.getAttribute('data-index'));
+                const question = questions[currentQuestionIndex];
+                
+                // Prevent changing selection after answer is locked in
+                if (document.querySelector('.option.selected')) return;
+                
+                // Highlight selected option
+                selectedOption = selectedIndex;
+                document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+                selectedElement.classList.add('selected');
+                
+                // Check answer
+                const isCorrect = selectedIndex === question.correctAnswer;
+                const feedback = document.getElementById('feedback');
+                
+                if (isCorrect) {
+                    selectedElement.classList.add('correct');
+                    score++;
+                    updateScore();
+                } else {
+                    selectedElement.classList.add('incorrect');
+                    // Highlight correct answer
+                    document.querySelector(`.option[data-index="${question.correctAnswer}"]`).classList.add('correct');
+                }
+                
+                // Show feedback
+                feedback.textContent = isCorrect ? 'Correct! ' + question.explanation : 'Incorrect. ' + question.explanation;
+                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+                feedback.style.display = 'block';
+                
+                // Show next button
+                nextBtn.style.display = 'block';
+            }
+            
+            // Update score display
+            function updateScore() {
+                scoreDisplay.textContent = `Score: ${score}`;
+            }
+            
+            /**
+             * Display final results after quiz completion
+             * - Hides quiz container
+             * - Shows final score and performance message
+             * - Percentage calculated for performance rating
+             * - Different messages based on score ranges
+             */
+            function showResults() {
+                quizContainer.style.display = 'none';
+                nextBtn.style.display = 'none';
+                quizComplete.style.display = 'block';
+                
+                finalScore.textContent = score;
+                totalQuestions.textContent = questions.length;
+                
+                // Performance message based on score
+                const percentage = (score / questions.length) * 100;
+                let message = '';
+                
+                if (percentage >= 80) {
+                    message = 'Excellent job! You really know your stuff.';
+                } else if (percentage >= 60) {
+                    message = 'Good effort! You have solid knowledge.';
+                } else if (percentage >= 40) {
+                    message = 'Keep practicing! You have some knowledge gaps to fill.';
+                } else {
+                    message = 'Don\'t worry! Keep learning and try again.';
+                }
+                
+                performanceMessage.textContent = message;
+            }
+            
+            // Event Listeners:
+            // nextBtn - Loads next question when clicked
+            // restartBtn - Resets quiz to initial state
+            nextBtn.addEventListener('click', () => {
+                currentQuestionIndex++;
+                selectedOption = null;
+                nextBtn.style.display = 'none';
+                loadQuestion();
+            });
+            
+            restartBtn.addEventListener('click', () => {
+                quizContainer.style.display = 'block';
+                quizComplete.style.display = 'none';
+                initQuiz();
+            });
+            
+            // Start the quiz
+            initQuiz();
+        });
+    </script>
+</body>
+</html>

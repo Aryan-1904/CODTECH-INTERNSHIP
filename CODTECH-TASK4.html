@@ -1,0 +1,298 @@
+	
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Hub - Online Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-section:not(.active) {
+            display: none;
+        }
+    .progress-container {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1) inset;
+        }
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            transition: width 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="flex items-center gap-2">
+    <img class="h-8 w-auto" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7c16f262-ced1-4094-a106-cf419fa24d8a.png" alt="Code Hub logo">
+    <span class="font-bold text-purple-400 text-lg">Code Hub</span>
+</div>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#" onclick="showPage('course-listing')" class="nav-link text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Courses</a>
+                        <a href="#" onclick="showPage('progress')" class="nav-link text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Progress</a>
+                        <a href="#" onclick="showPage('videos')" class="nav-link text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Videos</a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="relative ml-3">
+                        <div class="relative">
+                            <img class="h-8 w-8 rounded-full" src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c2b1ca8f-20b0-498b-9105-b8dd48c615dd.png" alt="Professional male profile picture">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Course Listing Page -->
+        <section id="course-listing" class="page-section active">
+            <h2 class="text-3xl font-bold mb-6 text-center text-purple-400">Available Courses</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- HTML Course -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2d5d3973-f930-4e42-a7e7-9dd3cacacaf6.png" alt="HTML and CSS course" class="w-full h-48 object-cover">
+        <div class="p-6">
+            <div class="flex justify-between items-start">
+                <h3 class="text-xl font-bold text-gray-800">HTML & CSS Mastery</h3>
+                <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded">Beginner</span>
+            </div>
+            <p class="mt-2 text-gray-600">Learn the core technologies for building web pages. Covers all fundamentals and best practices.</p>
+            <div class="mt-4 flex items-center justify-between">
+                <span class="text-purple-400 font-bold">₹4,150</span>
+                <button class="text-sm text-purple-400 hover:text-purple-600" onclick="toggleExpand('html-desc')">Read more →</button>
+            </div>
+            <div id="html-desc" class="hidden mt-4 text-sm text-gray-500">
+                <p>✔ 15 hours of video content</p>
+                <p>✔ 5 real-world projects</p>
+                <p>✔ Certificate of completion</p>
+                <p>✔ Responsive design techniques</p>
+                <div class="mt-4">
+                    <button class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Course -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b26c4c29-5985-41ac-b12b-7af21eb40c5d.png" alt="JavaScript course" class="w-full h-48 object-cover">
+        <div class="p-6">
+            <div class="flex justify-between items-start">
+                <h3 class="text-xl font-bold text-gray-800">JavaScript Fundamentals</h3>
+                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">Intermediate</span>
+            </div>
+            <p class="mt-2 text-gray-600">Go beyond basics with ES6+ features, asynchronous programming, and DOM manipulation.</p>
+            <div class="mt-4 flex items-center justify-between">
+                <span class="text-indigo-600 font-bold">₹4,980</span>
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="toggleExpand('js-desc')">Read more →</button>
+            </div>
+            <div id="js-desc" class="hidden mt-4 text-sm text-gray-500">
+                <p>✔ 20 hours of video content</p>
+                <p>✔ 3 hands-on projects</p>
+                <p>✔ Practical exercises</p>
+                <p>✔ Debugging techniques</p>
+                <div class="mt-4">
+                    <button class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- React Course -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cfd75e71-8670-4623-9e30-074f5d602b0e.png" alt="React course" class="w-full h-48 object-cover">
+        <div class="p-6">
+            <div class="flex justify-between items-start">
+                <h3 class="text-xl font-bold text-gray-800">React.js Essentials</h3>
+                <span class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded">Advanced</span>
+            </div>
+            <p class="mt-2 text-gray-600">Build modern web applications with React hooks, context API, and React Router.</p>
+            <div class="mt-4 flex items-center justify-between">
+                <span class="text-indigo-600 font-bold">₹5,810</span>
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="toggleExpand('react-desc')">Read more →</button>
+            </div>
+            <div id="react-desc" class="hidden mt-4 text-sm text-gray-500">
+                <p>✔ 25 hours of video content</p>
+                <p>✔ 2 complete applications</p>
+                <p>✔ State management</p>
+                <p>✔ API integration</p>
+                <div class="mt-4">
+                    <button class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vue.js Course -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e60aeb3f-f379-4ebf-a35f-b37a855306f5.png" alt="Vue.js course" class="w-full h-48 object-cover">
+        <div class="p-6">
+            <div class="flex justify-between items-start">
+                <h3 class="text-xl font-bold text-gray-800">Vue.js Frontend Mastery</h3>
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded">Intermediate</span>
+            </div>
+            <p class="mt-2 text-gray-600">Learn Vue.js framework for building modern web interfaces.</p>
+            <div class="mt-4 flex items-center justify-between">
+                <span class="text-indigo-600 font-bold">₹4,980</span>
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="toggleExpand('vue-desc')">Read more →</button>
+            </div>
+            <div id="vue-desc" class="hidden mt-4 text-sm text-gray-500">
+                <p>✔ 22 hours of video content</p>
+                <p>✔ Vue 3 Composition API</p>
+                <p>✔ State management with Pinia</p>
+                <p>✔ Real-world projects</p>
+                <div class="mt-4">
+                    <button class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Node.js Course -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/71564e01-293f-4b60-b007-c095a4f04b81.png" alt="Node.js course" class="w-full h-48 object-cover">
+        <div class="p-6">
+            <div class="flex justify-between items-start">
+                <h3 class="text-xl font-bold text-gray-800">Node.js Backend Development</h3>
+                <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2 py-1 rounded">Advanced</span>
+            </div>
+            <p class="mt-2 text-gray-600">Build scalable backend services with Node.js, Express and MongoDB.</p>
+            <div class="mt-4 flex items-center justify-between">
+                <span class="text-indigo-600 font-bold">₹6,640</span>
+                <button class="text-sm text-indigo-600 hover:text-indigo-800" onclick="toggleExpand('node-desc')">Read more →</button>
+            </div>
+            <div id="node-desc" class="hidden mt-4 text-sm text-gray-500">
+                <p>✔ 30 hours of video content</p>
+                <p>✔ REST API development</p>
+                <p>✔ Authentication & security</p>
+                <p>✔ Database integration</p>
+                <div class="mt-4">
+                    <button class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </section>
+
+        <!-- Progress Tracking Page -->
+        <section id="progress" class="page-section" style="display:none">
+            <h2 class="text-2xl font-bold mb-4">Your Progress</h2>
+            <ul class="space-y-4">
+                <li class="bg-white p-4 rounded shadow">
+                    <h3 class="font-semibold">HTML & CSS: <span class="font-bold">0%</span></h3>
+                    <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </li>
+                <li class="bg-white p-4 rounded shadow">
+                    <h3 class="font-semibold">JavaScript: <span class="font-bold">0%</span></h3>
+                    <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-green-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </li>
+                <li class="bg-white p-4 rounded shadow">
+                    <h3 class="font-semibold">React: <span class="font-bold">0%</span></h3>
+                    <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </li>
+                <li class="bg-white p-4 rounded shadow">
+                    <h3 class="font-semibold">Vue.js: <span class="font-bold">0%</span></h3>
+                    <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </li>
+                <li class="bg-white p-4 rounded shadow">
+                    <h3 class="font-semibold">Node.js: <span class="font-bold">0%</span></h3>
+                    <div class="mt-2 w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Video Embedding Page -->
+        <section id="videos" class="page-section" style="display:none">
+            <h2 class="text-3xl font-bold mb-6 text-center text-purple-400">Course Videos</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-4 bg-gray-100">
+            <h3 class="font-bold text-gray-700">HTML Crash Course</h3>
+        </div>
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/pQN-pnXPaVg" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-4 bg-gray-100">
+            <h3 class="font-bold text-gray-700">CSS Flexbox Explained</h3>
+        </div>
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/JJSoEo8JSnc" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-4 bg-gray-100">
+            <h3 class="font-bold text-gray-700">JavaScript Basics</h3>
+        </div>
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/W6NZfCO5SIk" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-4 bg-gray-100">
+            <h3 class="font-bold text-gray-700">React Tutorial</h3>
+        </div>
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/w7ejDZ8SWv8" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-4 bg-gray-100">
+            <h3 class="font-bold text-gray-700">Vue.js Crash Course</h3>
+        </div>
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/qZXt1Aom3Cs" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="p-4 bg-gray-100">
+            <h3 class="font-bold text-gray-700">Node.js Tutorial</h3>
+        </div>
+        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/TlB_eWDSMt4" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+        </section>
+    </main>
+
+    <script>
+        function showPage(pageId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+            });
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                targetPage.style.display = 'block';
+                
+                // Update active nav link
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('text-purple-400', 'border-purple-400');
+                });
+                const activeLink = document.querySelector(`a[onclick="showPage('${pageId}')"]`);
+                if (activeLink) {
+                    activeLink.classList.add('text-purple-400', 'border-purple-400');
+                }
+            }
+        }
+
+        function toggleExpand(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle('hidden');
+        }
+
+        // Initialize the first page
+        document.getElementById('course-listing').classList.add('active');
+        document.getElementById('course-listing').style.display = 'block';
+    </script>
+</body>
+</html>
+
